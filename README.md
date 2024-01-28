@@ -10,10 +10,10 @@ Thanks for checking out this front-end coding challenge.
 
 # Technologies used:-
 
-# HTML
+- HTML
 
-# CSS
+- CSS
 
-# Javascript
+- Javascript
 
 **Have fun building!** 🚀
