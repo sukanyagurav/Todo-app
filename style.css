@@ -41,7 +41,7 @@ body{
     flex-direction: column;
     transition: all 0.5s;
     min-height: 100vh;
-    gap:3rem;
+    gap:5rem;
     background-color: var(--light-gray-blue);
     font-family: "Josefin Sans", sans-serif;
     font-optical-sizing: auto;
@@ -54,7 +54,8 @@ body.dark{
 }
 body.dark .tasks,
 body.dark .new-task,
-body.dark .new-task input{
+body.dark .new-task input,
+body.dark .main-action{
     background-color: var(--dark-blue-2);
 }
 body.dark .task label{
@@ -125,6 +126,8 @@ main header h1{
     background-color: var(--light-gray);
     padding:1.2rem 1.3rem;
     border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.574) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+
 }
 .new-task input{
     width: 100%;
@@ -146,7 +149,9 @@ main header h1{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    position: relative;
+    box-shadow: rgba(0, 0, 0, 0.574) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+
 }
 .task-status{
     padding:1.2rem 1.3rem; 
@@ -175,10 +180,23 @@ button{
 .task-action button:hover{
     color:var(--dark-gray-blue-2);
 }
-.task-action{
+
+.task-action,.main-action{
     display: flex;
     justify-content: space-evenly;
     gap:1rem;
+}
+@media (max-width:550px){
+    .main-action{
+        position: absolute;
+        bottom: -4rem;
+        left: 0;
+        right: 50%;
+        width: 100%;
+        background-color: var(--light-gray);
+        padding:1rem;
+        border-radius: 5px;
+    }
 }
 .tasks-left{
     display: flex;
