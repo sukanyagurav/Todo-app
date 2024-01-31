@@ -17,6 +17,7 @@ newTaskForm.addEventListener('submit',function(e){
 	if (taskName == null || taskName === "") return;
     const task = createTask(taskName);
     tasks.push(task)
+    
     clearElement(taskContainer)
     saveAndRender()
     newTaskInput.value=''
@@ -37,6 +38,7 @@ function save(){
     localStorage.setItem(LOCAL_STORAGE_LIST_KEY,JSON.stringify(tasks))
 }
 function render(tasks){
+    
     for(let i=tasks.length-1;i>=0;i--){
         const taskElement = document.importNode(taskTemplate.content,true)
         const checkbox= taskElement.querySelector('input')
@@ -46,7 +48,17 @@ function render(tasks){
         label.htmlFor = tasks[i].id
         label.append(tasks[i].name)
         taskContainer.appendChild(taskElement)
+        const draggables = document.querySelectorAll(".task");
+        draggables.forEach((draggable) => {
+            draggable.addEventListener("dragstart", () => {
+                draggable.classList.add("dragging");
+            });
+            draggable.addEventListener("dragend", () => {
+                draggable.classList.remove("dragging");
+            });
+        });
     }
+
     if(tasks.length == 0){
         const p =document.createElement('p')
         p.className='empty'
@@ -69,11 +81,41 @@ taskContainer.addEventListener('click',(e)=>{
         clearElement(taskContainer)
         saveAndRender()
         renderTaskCount()
-    }
+    }  
 })
+taskContainer.addEventListener('dragover',(e)=>{
+    e.preventDefault()
+    const afterElement = getDragAfterElement(taskContainer, e.clientY);
+    const draggable = document.querySelector(".dragging");
+    taskContainer.appendChild(draggable);
+		if (afterElement == null) {
+			taskContainer.appendChild(draggable);
+		} else {
+			taskContainer.insertBefore(draggable, afterElement);
+		}
+})
+function getDragAfterElement(container, y) {
+	const draggableElements = [
+		...container.querySelectorAll(".task:not(.dragging)")
+	];
+
+	return draggableElements.reduce(
+		(closest, child) => {
+			const box = child.getBoundingClientRect();
+			const offset = y - box.top - box.height / 2;
+			if (offset < 0 && offset > closest.offset) {
+				return { offset: offset, element: child };
+			} else {
+				return closest;
+			}
+		},
+		{ offset: Number.NEGATIVE_INFINITY }
+	).element;
+}
+
 function renderTaskCount(){
     const incompleteTask = tasks.filter(task=>!task.complete).length
-    const taskString = incompleteTask === 1 ? 'task' : 'tasks'
+    const taskString = incompleteTask <= 1 ? 'task' : 'tasks'
     taskCount.innerHTML = `${incompleteTask} ${taskString} left`
 }
 function btnFocus(ele){

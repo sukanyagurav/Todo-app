@@ -215,7 +215,7 @@ button{
     padding:1rem 1.3rem 0; 
     position: relative;
 	margin-bottom: 1.25em;
-    cursor: pointer;
+    cursor: move;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -341,4 +341,7 @@ body #dark-icon{
 }
 body #light-icon {
     display: none;
+}
+.dragging {
+	opacity: 0.5;
 }
